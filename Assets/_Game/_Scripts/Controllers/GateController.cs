@@ -3,70 +3,96 @@ using UnityEngine;
 
 public class GateController : MonoBehaviour
 {
-	#region SerializedFields
+    #region SerializedFields
 
-	[SerializeField]
-	private Gate gate1;
+    [SerializeField]
+    private Gate gate1;
 
-	[SerializeField]
-	private Gate gate2;
+    [SerializeField]
+    private Gate gate2;
 
-	#endregion
+    #endregion
 
-	#region Variables
+    #region Variables
 
-	#endregion
+    #endregion
 
-	#region Props
+    #region Props
 
-	#endregion
+    #endregion
 
-	#region Unity Methods
+    #region Unity Methods
 
-	private void Start() 
-	{
-		InitGate(gate1);
-		InitGate(gate2);
-	}
+    private void Start()
+    {
+        InitGate(gate1);
+        InitGate(gate2);
+    }
 
-	#endregion
+    #endregion
 
-	#region Methods
+    #region Methods
 
-	private void InitGate(Gate gate)
-	{
-		if(!gate.activateGate)
-		{
-			gate.gameObject.SetActive(false);
-			return;
-		}
-		
-		switch (gate.operationType)
-		{
-			case OperationType.Div:
-			break;
-			case OperationType.Mul:
-			break;
-			case OperationType.Sub:
-			break;
-			case OperationType.Sum:
-			break;
-		}
+    private void InitGate(Gate gate)
+    {
+        if (!gate.activateGate)
+        {
+            gate.gameObject.SetActive(false);
+            return;
+        }
 
-		switch (gate.colorType)
-		{
-			case ColorType.Blue:
-			break;
-			case ColorType.Red:
-			break;
-		}
+        switch (gate.operationType)
+        {
+            case OperationType.Div:
+                gate.text.text = "/";
+                break;
+            case OperationType.Mul:
+                gate.text.text = "x";
+                break;
+            case OperationType.Sub:
+                gate.text.text = "-";
+                break;
+            case OperationType.Sum:
+                gate.text.text = "+";
+                break;
+        }
 
-		gate.text.text = gate.value.ToString();
-	}
+        switch (gate.colorType)
+        {
+            case ColorType.Blue:
+                gate.gameObject.GetComponent<Material>().color = Color.blue;
+                break;
+            case ColorType.Red:
+                gate.gameObject.GetComponent<Material>().color = Color.red;
+                break;
+        }
 
-	#endregion
+        gate.text.text = gate.value.ToString();
+    }
 
-	#region Callbacks
+    public void DoArrowOperation(Gate gate, int value)
+    {
+        switch (gate.operationType)
+        {
+            case OperationType.Div:
+                value /= gate.value;
+                break;
+            case OperationType.Mul:
+                value *= gate.value;
+                break;
+            case OperationType.Sub:
+                value -= gate.value;
+                break;
+            case OperationType.Sum:
+                value += gate.value;
+                break;
+        }
 
-	#endregion
+    }
+
+    #endregion
+
+    #region Callbacks
+
+    #endregion
 }
