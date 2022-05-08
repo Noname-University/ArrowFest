@@ -65,6 +65,43 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         return new Vector3(x, y, 0);
     }
 
+	public void ShowArrows(int arrowCount, int newArrowCount)
+    {
+        if (newArrowCount < maxArrowCount)
+        {
+            for (int i = arrowCount; i < newArrowCount && i < maxArrowCount; i++)
+            {
+                arrows[i].SetActive(true);
+            }
+        }
+    }
+
+    private void HideArrows(int arrowCount, int newArrowCount)
+    {
+        if (newArrowCount < maxArrowCount)
+        {
+           for (int i = arrowCount; i > newArrowCount && i>0; i--)
+		   {
+			   arrows[i].SetActive(false);
+		   }
+            
+        }
+    }
+
+	private void ChangeArrowCount(int newValue)
+    {
+		if (newValue > currentArrowCount)
+        {
+            ShowArrows(currentArrowCount, newValue);
+        }
+        else
+        {
+            HideArrows(currentArrowCount, newValue);
+        }
+
+        currentArrowCount = newValue;
+    }
+
 	#endregion
 
 	#region Callbacks
