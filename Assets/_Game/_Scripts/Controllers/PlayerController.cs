@@ -34,6 +34,15 @@ public class PlayerController : MonoSingleton<PlayerController>
 		transform.position += new Vector3(0, 0, speed * Time.deltaTime);
 	}
 
+	private void OnTriggerEnter(Collider other) 
+	{
+		var collectable = other.GetComponent<ICollectable>();
+		if (collectable != null)
+		{
+			collectable.Collect();
+		}
+	}
+
     #endregion
 
     #region Methods

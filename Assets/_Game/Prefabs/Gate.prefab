@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2062380332348854631}
   - component: {fileID: 4286297328307348909}
   - component: {fileID: 5563453429108677918}
+  - component: {fileID: 629580552}
   m_Layer: 0
   m_Name: Gate2
   m_TagString: Untagged
@@ -97,6 +98,24 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -462981019419857548, guid: 17a8789954f5cec49bd2c3e0a675fdb0, type: 3}
+--- !u!114 &629580552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340465281246725240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5768e66c45184342970956b4a508fda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gateController: {fileID: 1850116016812762313}
+  activateGate: 1
+  value: 20
+  operationType: 1
+  colorType: 0
+  text: {fileID: 4723311916647965484}
 --- !u!1 &3354327127625254214
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +248,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 16
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -279,6 +298,7 @@ GameObject:
   - component: {fileID: 8123030543835028776}
   - component: {fileID: 6295533599454112226}
   - component: {fileID: 7367866804414129172}
+  - component: {fileID: 1413738456}
   m_Layer: 0
   m_Name: Gate1
   m_TagString: Untagged
@@ -364,6 +384,24 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -462981019419857548, guid: 17a8789954f5cec49bd2c3e0a675fdb0, type: 3}
+--- !u!114 &1413738456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5503053515918936119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5768e66c45184342970956b4a508fda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gateController: {fileID: 1850116016812762313}
+  activateGate: 0
+  value: 5
+  operationType: 0
+  colorType: 0
+  text: {fileID: 6376411017053311390}
 --- !u!1 &6216543664929279698
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,20 +447,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9231fb33b65b3e4b8c367b65e3794c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gate1:
-    activateGate: 0
-    gameObject: {fileID: 5503053515918936119}
-    text: {fileID: 6376411017053311390}
-    value: 0
-    operationType: 0
-    colorType: 0
-  gate2:
-    activateGate: 1
-    gameObject: {fileID: 2340465281246725240}
-    text: {fileID: 4723311916647965484}
-    value: 0
-    operationType: 0
-    colorType: 0
+  red: {fileID: 2100000, guid: 68ad179c3ed2b5e4d87fb90376e1661e, type: 2}
+  blue: {fileID: 2100000, guid: e917bd1ee68276249afd4b44b3e4e289, type: 2}
+  gate1: {fileID: 1413738456}
+  gate2: {fileID: 629580552}
 --- !u!1 &8172079534420236710
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,7 +583,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 16
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

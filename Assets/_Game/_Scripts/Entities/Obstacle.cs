@@ -1,59 +1,42 @@
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
+public class Obstacle : MonoBehaviour, ICollectable
 {
 	#region SerializedFields
 
 	[SerializeField]
-	private int damage;
+	private int value;
 
 	[SerializeField]
 	private int score;
 
-	private Rigidbody rb;
+    #endregion
 
-	#endregion
+    #region Variables
 
-	#region Variables
+    #endregion
 
-	#endregion
+    #region Props
 
-	#region Props
+    #endregion
 
-	private int Score => score;
-	private int Damage => damage;
+    #region Unity Methods
 
-	#endregion
+    #endregion
 
-	#region Unity Methods
+    #region Methods
 
-	private void Start() 
-	{
-		rb= GetComponent<Rigidbody>();
-	}
+    public void Collect()
+    {
+		ArrowManager.Instance.DecreaseArrows(value);
+        Close();
+    }
 
-	#endregion
+	private void Close()
+    {
+        gameObject.SetActive(false);
+    }
 
-	#region Methods
-
-	private void OnTriggerEnter(Collider rb) 
-	{
-		TakeDamage(damage);
-	}
-
-	private void Kill()
-	{
-		var kill= CurrentScore + score;
-	}
-
-	public void TakeDamage(int arrowCount)
-	{
-		arrowCount -= damage;
-		if(arrowCount<=0)
-		{
-			Invoke?=Fail;
-		}
-	}
 	#endregion
 
 	#region Callbacks

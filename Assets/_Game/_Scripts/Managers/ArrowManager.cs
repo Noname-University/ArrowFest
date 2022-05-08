@@ -20,11 +20,13 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 	private int currentArrowCount;
 
 	private int ring;
-	private int ringCapacity = 1;
+	private int ringCapacity = 0;
 
 	#endregion
 
 	#region Props
+
+    public int CurrentArrowCount => currentArrowCount;
 
 	#endregion
 
@@ -38,7 +40,11 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 		{
 			var arrow = Instantiate(arrowPrefab, GetArrowPosition(i), Quaternion.identity,PlayerController.Instance.transform);
 			arrows[i] = arrow;
+            arrow.SetActive(false);
 		}
+
+        arrows[0].SetActive(true);
+        currentArrowCount = 1;
 	}
 
 	#endregion
@@ -65,41 +71,38 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         return new Vector3(x, y, 0);
     }
 
-	public void ShowArrows(int arrowCount, int newArrowCount)
+    public void IncreaseArrows(int count)
     {
-        if (newArrowCount < maxArrowCount)
+        for (int i = 0; i < count; i++)
         {
-            for (int i = arrowCount; i < newArrowCount && i < maxArrowCount; i++)
-            {
-                arrows[i].SetActive(true);
-            }
+            arrows[currentArrowCount++].gameObject.SetActive(true);
         }
     }
 
-    private void HideArrows(int arrowCount, int newArrowCount)
+    public void DecreaseArrows(int count)
     {
-        if (newArrowCount < maxArrowCount)
+        if(currentArrowCount <= count)
         {
-           for (int i = arrowCount; i > newArrowCount && i>0; i--)
-		   {
-			   arrows[i].SetActive(false);
-		   }
-            
+            Debug.Log("gg");
+        }
+        for (int i = 0; i < count; i++)
+        {
+            arrows[--currentArrowCount].gameObject.SetActive(false);
         }
     }
 
-	private void ChangeArrowCount(int newValue)
+    public void SetArrows(int newCount)
     {
-		if (newValue > currentArrowCount)
+        for (int i = 0; i < newCount; i++)
         {
-            ShowArrows(currentArrowCount, newValue);
+            arrows[i].SetActive(true);
         }
-        else
+        for (int i = newCount; i < maxArrowCount; i++)
         {
-            HideArrows(currentArrowCount, newValue);
+            arrows[i].SetActive(false);
         }
 
-        currentArrowCount = newValue;
+        currentArrowCount = newCount;
     }
 
 	#endregion
