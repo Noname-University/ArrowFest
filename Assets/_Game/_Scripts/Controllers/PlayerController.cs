@@ -49,8 +49,8 @@ public class PlayerController : MonoSingleton<PlayerController>
 			Mathf.Clamp
 			(
 				transform.position.x + sideSpeed * Time.deltaTime * newPositionX,
-				-PlaneController.Instance.PlaneSideSize + 0.5f,
-				PlaneController.Instance.PlaneSideSize - 0.5f
+				-RoadController.Instance.PlaneSideSize + 0.5f,
+				RoadController.Instance.PlaneSideSize - 0.5f
 			),
 			transform.position.y,
 			transform.position.z
