@@ -9,6 +9,10 @@ public class Gate : MonoBehaviour, ICollectable
 
 	public bool activateGate;
 
+	public bool activateMovementGate;
+	public float speed;
+
+
 	public int value;
 
 	public OperationType operationType;
@@ -30,6 +34,11 @@ public class Gate : MonoBehaviour, ICollectable
         {
             gameObject.SetActive(false);
             return;
+        }
+
+        if (activateMovementGate)
+        {
+            transform.LeanMoveLocalX(1,0.5f).setLoopPingPong();
         }
 
         switch (operationType)
