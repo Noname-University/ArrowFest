@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Utilities;
 
@@ -8,12 +9,20 @@ public class ScoreController : MonoSingleton<ScoreController>
     #endregion
 
     #region Variables
+
     private int currentScore = 0;
 
     #endregion
 
     #region Props
+
     public int CurrentScore => currentScore;
+
+    #endregion
+
+    #region Events
+
+    public event Action ScoreChange;
 
     #endregion
 
@@ -25,6 +34,7 @@ public class ScoreController : MonoSingleton<ScoreController>
     public void IncreaseScore(int scoreValue)
     {
         currentScore += scoreValue;
+        ScoreChange?.Invoke();
     }
 
     #endregion

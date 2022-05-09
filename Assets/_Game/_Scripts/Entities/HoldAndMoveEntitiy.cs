@@ -16,20 +16,20 @@ public class HoldAndMoveEntitiy : MonoBehaviour
     #endregion
 
     #region Unity Methods
+
     private void Start()
     {
         MoveEntitiy();
 
     }
 
-
-
     #endregion
 
     #region Methods
     private void MoveEntitiy()
     {
-        transform.LeanMoveLocalX(-413.4f, 0.5f).setLoopPingPong();
+        transform.LeanMoveLocalX(-250f, 0.5f).setOnComplete(()=> transform.LeanMoveLocalX(250f, 0.5f).setLoopPingPong());
+        
     }
 
     #endregion

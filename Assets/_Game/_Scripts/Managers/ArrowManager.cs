@@ -20,7 +20,10 @@ public class ArrowManager : MonoSingleton<ArrowManager>
     private int currentArrowCount;
 
     private int ring;
+    private int line;
+
     private int ringCapacity = 0;
+    private int lineCapacity = 50;
 
     #endregion
 
@@ -38,13 +41,14 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
         for (int i = 0; i < maxArrowCount; i++)
         {
-            var arrow = Instantiate(arrowPrefab, GetArrowPosition(i), Quaternion.identity, PlayerController.Instance.transform);
+            var arrow = Instantiate(arrowPrefab,GetArrowPosition(i), Quaternion.identity, PlayerController.Instance.transform);
             arrows[i] = arrow;
             arrow.SetActive(false);
         }
 
         arrows[0].SetActive(true);
         currentArrowCount = 1;
+        GetFinalArrowPosition();
     }
 
     #endregion
@@ -69,6 +73,19 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         float y = Mathf.Sin(Mathf.Deg2Rad * angle) * ring * .075f;
 
         return new Vector3(x, y, 0);
+    }
+
+    private void GetFinalArrowPosition()
+    {
+        arrows[0].transform.position = new Vector3(0, transform.position.y, transform.position.z);
+        for (int i = 0; i < arrows.Length; i+=2)
+        {
+            line++;
+            arrows[i].SetActive(true);
+            arrows[i + 1].SetActive(true);
+            arrows[i].transform.position = new Vector3(0 - (.05f * i), 0, 0);
+            arrows[i + 1].transform.position = new Vector3(0 + (.05f * i), 0, 0);
+        }
     }
 
     public void IncreaseArrows(int count)

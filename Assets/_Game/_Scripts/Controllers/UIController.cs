@@ -7,14 +7,21 @@ using System;
 public class UIController : MonoSingleton<UIController>
 {
     #region SerializedFields
+
     [SerializeField]
     private TextMeshProUGUI scoreText;
+
     [SerializeField]
     private TextMeshProUGUI levelText;
+
     [SerializeField]
     private GameObject holdAndMovePanel;
+
     [SerializeField]
     private GameObject successPanel;
+
+    [SerializeField]
+    private GameObject failPanel;
 
     [SerializeField]
     private TextMeshPro arrowCountText;
@@ -34,8 +41,10 @@ public class UIController : MonoSingleton<UIController>
     private void Start()
     {
         GameManager.Instance.GameStatesChanged += OnGameStatesChanged;
+        ScoreController.Instance.ScoreChange += OnScoreChange;
     }
 
+   
     #endregion
 
     #region Methods
@@ -45,6 +54,7 @@ public class UIController : MonoSingleton<UIController>
         PlayerController.Instance.ArrowCountChanged += OnArrowCountChanged;
 
         successPanel.SetActive(false);
+        failPanel.SetActive(false);
         holdAndMovePanel.SetActive(true);
         arrowCountText.gameObject.SetActive(true);
         arrowCountText.text = "1";
@@ -56,14 +66,22 @@ public class UIController : MonoSingleton<UIController>
     {
         levelText.text = "Level " + " " + (SceneManager.GetActiveScene().buildIndex + 1).ToString();
     }
+
     private void GetCurrentScore()
     {
         scoreText.text = ScoreController.Instance.CurrentScore.ToString();
     }
+
     public void GetNextLevelButton()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
+    public void GetRestartLevelButton()
+    {
+        //
+    }
+
     private void GetCurrentArrowCount()
     {
         arrowCountText.text = ArrowManager.Instance.CurrentArrowCount.ToString();
@@ -103,6 +121,7 @@ public class UIController : MonoSingleton<UIController>
             case GameStates.InGame:
                 break;
             case GameStates.Fail:
+                failPanel.SetActive(true);
                 break;
             case GameStates.Final:
                 PlayerController.Instance.ArrowCountChanged -= OnArrowCountChanged;
@@ -113,6 +132,12 @@ public class UIController : MonoSingleton<UIController>
                 break;
         }
     }
+
+     private void OnScoreChange()
+    {
+       GetCurrentScore();
+    }
+
 
     #endregion
 }
