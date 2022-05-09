@@ -8,9 +8,9 @@ public class UIController : MonoSingleton<UIController>
 {
     #region SerializedFields
     [SerializeField]
-    private TextMeshPro scoreText;
+    private TextMeshProUGUI scoreText;
     [SerializeField]
-    private TextMeshPro levelText;
+    private TextMeshProUGUI levelText;
     [SerializeField]
     private GameObject holdAndMovePanel;
     [SerializeField]
@@ -32,8 +32,10 @@ public class UIController : MonoSingleton<UIController>
         InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
         GetCurrentLevel();
         GetCurrentScore();
-        GetCurrentArrowCount();
+        PlayerController.Instance.ArrowCountChanged += OnArrowCountChanged;
+        arrowCountText.text = "1";
     }
+
 
 
     #endregion
@@ -53,7 +55,6 @@ public class UIController : MonoSingleton<UIController>
     }
     private void GetCurrentArrowCount()
     {
-        arrowCountText.gameObject.SetActive(true);
         arrowCountText.text = ArrowManager.Instance.CurrentArrowCount.ToString();
     }
 
@@ -63,8 +64,13 @@ public class UIController : MonoSingleton<UIController>
     private void OnTouchPositionChanged(float obj)
     {
         holdAndMovePanel.SetActive(false);
+        arrowCountText.gameObject.SetActive(true);
         InputController.Instance.TouchPositionChanged -= OnTouchPositionChanged;
 
+    }
+    private void OnArrowCountChanged()
+    {
+        GetCurrentArrowCount();
     }
 
     #endregion

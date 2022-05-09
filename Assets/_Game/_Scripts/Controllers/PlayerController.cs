@@ -21,6 +21,7 @@ public class PlayerController : MonoSingleton<PlayerController>
     #region Props
 
     #endregion
+    public event Action ArrowCountChanged;
 
     #region Unity Methods
 
@@ -40,6 +41,7 @@ public class PlayerController : MonoSingleton<PlayerController>
         if (collectable != null)
         {
             collectable.Collect();
+            ArrowCountChanged?.Invoke();
         }
     }
 
