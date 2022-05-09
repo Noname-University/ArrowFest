@@ -14,7 +14,11 @@ public class UIController : MonoSingleton<UIController>
     [SerializeField]
     private GameObject holdAndMovePanel;
     [SerializeField]
+    private GameObject successPanel;
+
+    [SerializeField]
     private TextMeshPro arrowCountText;
+
     #endregion
 
     #region Variables
@@ -26,21 +30,28 @@ public class UIController : MonoSingleton<UIController>
     #endregion
 
     #region Unity Methods
+
     private void Start()
     {
-        holdAndMovePanel.SetActive(true);
-        InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
-        GetCurrentLevel();
-        GetCurrentScore();
-        PlayerController.Instance.ArrowCountChanged += OnArrowCountChanged;
-        arrowCountText.text = "1";
+        GameManager.Instance.GameStatesChanged += OnGameStatesChanged;
     }
-
-
 
     #endregion
 
     #region Methods
+    private void InitGame()
+    {
+        InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
+        PlayerController.Instance.ArrowCountChanged += OnArrowCountChanged;
+
+        successPanel.SetActive(false);
+        holdAndMovePanel.SetActive(true);
+        arrowCountText.gameObject.SetActive(true);
+        arrowCountText.text = "1";
+
+        GetCurrentLevel();
+        GetCurrentScore();
+    }
     private void GetCurrentLevel()
     {
         levelText.text = "Level " + " " + (SceneManager.GetActiveScene().buildIndex + 1).ToString();
@@ -58,6 +69,12 @@ public class UIController : MonoSingleton<UIController>
         arrowCountText.text = ArrowManager.Instance.CurrentArrowCount.ToString();
     }
 
+    private void OnFinishGame()
+    {
+
+    }
+
+
     #endregion
 
     #region Callbacks
@@ -66,11 +83,35 @@ public class UIController : MonoSingleton<UIController>
         holdAndMovePanel.SetActive(false);
         arrowCountText.gameObject.SetActive(true);
         InputController.Instance.TouchPositionChanged -= OnTouchPositionChanged;
+        GameManager.Instance.UpdateGameState(GameStates.InGame);
 
     }
+
     private void OnArrowCountChanged()
     {
         GetCurrentArrowCount();
+
+    }
+
+    private void OnGameStatesChanged(GameStates newState)
+    {
+        switch (newState)
+        {
+            case GameStates.Start:
+                InitGame();
+                break;
+            case GameStates.InGame:
+                break;
+            case GameStates.Fail:
+                break;
+            case GameStates.Final:
+                PlayerController.Instance.ArrowCountChanged -= OnArrowCountChanged;
+                arrowCountText.gameObject.SetActive(false);
+                break;
+            case GameStates.Success:
+                successPanel.SetActive(true);
+                break;
+        }
     }
 
     #endregion

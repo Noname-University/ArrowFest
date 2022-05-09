@@ -259,6 +259,7 @@ MonoBehaviour:
   scoreText: {fileID: 974306397}
   levelText: {fileID: 775293133}
   holdAndMovePanel: {fileID: 4623741178938055686}
+  successPanel: {fileID: 3203691837128237493}
   arrowCountText: {fileID: 1503347064}
 --- !u!4 &109916325
 Transform:
@@ -2588,7 +2589,7 @@ GameObject:
   - component: {fileID: 299666715533161360}
   - component: {fileID: 1797960088524392595}
   m_Layer: 5
-  m_Name: LevelCompletePanel
+  m_Name: SuccesPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

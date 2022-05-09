@@ -32,7 +32,10 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     private void Update()
     {
+        if (GameManager.Instance.CurrentGameState != GameStates.InGame) return;
+        
         transform.position += new Vector3(0, 0, speed * Time.deltaTime);
+        
     }
 
     private void OnTriggerEnter(Collider other)

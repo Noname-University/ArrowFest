@@ -1,18 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoSingleton<GameManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    public event Action<GameStates> GameStatesChanged;
+
+    private GameStates currentGameState;
+    public GameStates CurrentGameState => currentGameState;
+
+
+    private void Start()
     {
-        
+        UpdateGameState(GameStates.Start);
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+    public void UpdateGameState(GameStates newState)
     {
-        
+        currentGameState = newState;
+        GameStatesChanged?.Invoke(currentGameState);
     }
 }
