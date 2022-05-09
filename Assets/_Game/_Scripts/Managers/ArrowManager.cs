@@ -3,55 +3,55 @@ using Utilities;
 
 public class ArrowManager : MonoSingleton<ArrowManager>
 {
-	#region SerializedFields
+    #region SerializedFields
 
-	[SerializeField]
-	private GameObject arrowPrefab;
+    [SerializeField]
+    private GameObject arrowPrefab;
 
-	[SerializeField]
-	private int maxArrowCount;
+    [SerializeField]
+    private int maxArrowCount;
 
-	#endregion
+    #endregion
 
-	#region Variables
+    #region Variables
 
-	private GameObject[] arrows;
+    private GameObject[] arrows;
 
-	private int currentArrowCount;
+    private int currentArrowCount;
 
-	private int ring;
-	private int ringCapacity = 0;
+    private int ring;
+    private int ringCapacity = 0;
 
-	#endregion
+    #endregion
 
-	#region Props
+    #region Props
 
     public int CurrentArrowCount => currentArrowCount;
 
-	#endregion
+    #endregion
 
-	#region Unity Methods
+    #region Unity Methods
 
-	private void Start() 
-	{
-		arrows = new GameObject[maxArrowCount];
+    private void Start()
+    {
+        arrows = new GameObject[maxArrowCount];
 
-		for (int i = 0; i < maxArrowCount; i++)
-		{
-			var arrow = Instantiate(arrowPrefab, GetArrowPosition(i), Quaternion.identity,PlayerController.Instance.transform);
-			arrows[i] = arrow;
+        for (int i = 0; i < maxArrowCount; i++)
+        {
+            var arrow = Instantiate(arrowPrefab, GetArrowPosition(i), Quaternion.identity, PlayerController.Instance.transform);
+            arrows[i] = arrow;
             arrow.SetActive(false);
-		}
+        }
 
         arrows[0].SetActive(true);
         currentArrowCount = 1;
-	}
+    }
 
-	#endregion
+    #endregion
 
-	#region Methods
+    #region Methods
 
-	private Vector3 GetArrowPosition(int i)
+    private Vector3 GetArrowPosition(int i)
     {
         if (i == 0) return Vector3.zero;
 
@@ -81,7 +81,7 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
     public void DecreaseArrows(int count)
     {
-        if(currentArrowCount <= count)
+        if (currentArrowCount <= count)
         {
             Debug.Log("gg");
         }
@@ -105,9 +105,9 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         currentArrowCount = newCount;
     }
 
-	#endregion
+    #endregion
 
-	#region Callbacks
+    #region Callbacks
 
-	#endregion
+    #endregion
 }

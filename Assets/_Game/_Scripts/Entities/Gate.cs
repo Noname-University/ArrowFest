@@ -4,31 +4,30 @@ using UnityEngine;
 [System.Serializable]
 public class Gate : MonoBehaviour, ICollectable
 {
-	[SerializeField]
-	private GateController gateController;
+    [SerializeField]
+    private GateController gateController;
 
-	public bool activateGate;
+    public bool activateGate;
 
-	public bool activateMovementGate;
-	public float speed;
+    public bool activateMovementGate;
 
 
-	public int value;
+    public int value;
 
-	public OperationType operationType;
+    public OperationType operationType;
 
-	public ColorType colorType;
+    public ColorType colorType;
 
-	[Space(25)]
+    [Space(25)]
 
-	public TextMeshPro text;
+    public TextMeshPro text;
 
-	private void Start() 
-	{
-		InitGate();
-	}
+    private void Start()
+    {
+        InitGate();
+    }
 
-	private void InitGate()
+    private void InitGate()
     {
         if (!activateGate)
         {
@@ -38,7 +37,7 @@ public class Gate : MonoBehaviour, ICollectable
 
         if (activateMovementGate)
         {
-            transform.LeanMoveLocalX(1,0.5f).setLoopPingPong();
+            transform.LeanMoveLocalX(1, 0.5f).setLoopPingPong();
         }
 
         switch (operationType)
@@ -71,7 +70,7 @@ public class Gate : MonoBehaviour, ICollectable
         text.text = text.text + value.ToString();
     }
 
-	public void DoArrowOperation()
+    public void DoArrowOperation()
     {
         switch (operationType)
         {
@@ -82,7 +81,7 @@ public class Gate : MonoBehaviour, ICollectable
                 ArrowManager.Instance.SetArrows(ArrowManager.Instance.CurrentArrowCount * value);
                 break;
             case OperationType.Sub:
-					ArrowManager.Instance.DecreaseArrows(value);
+                ArrowManager.Instance.DecreaseArrows(value);
                 break;
             case OperationType.Sum:
                 ArrowManager.Instance.IncreaseArrows(value);
@@ -90,9 +89,9 @@ public class Gate : MonoBehaviour, ICollectable
         }
     }
 
-	public void Collect()
+    public void Collect()
     {
-		DoArrowOperation();
+        DoArrowOperation();
         Close();
     }
 

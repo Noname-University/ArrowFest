@@ -4,44 +4,44 @@ using Utilities;
 
 public class PlayerController : MonoSingleton<PlayerController>
 {
-	#region SerializedFields
+    #region SerializedFields
 
-	[SerializeField]
-	private float speed;
+    [SerializeField]
+    private float speed;
 
-	[SerializeField]
-	private float sideSpeed;
+    [SerializeField]
+    private float sideSpeed;
 
-	#endregion
+    #endregion
 
-	#region Variables
+    #region Variables
 
-	#endregion
+    #endregion
 
-	#region Props
+    #region Props
 
-	#endregion
+    #endregion
 
-	#region Unity Methods
+    #region Unity Methods
 
-	private void Start() 
-	{
-		InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
-	}
+    private void Start()
+    {
+        InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
+    }
 
-	private void Update() 
-	{
-		transform.position += new Vector3(0, 0, speed * Time.deltaTime);
-	}
+    private void Update()
+    {
+        transform.position += new Vector3(0, 0, speed * Time.deltaTime);
+    }
 
-	private void OnTriggerEnter(Collider other) 
-	{
-		var collectable = other.GetComponent<ICollectable>();
-		if (collectable != null)
-		{
-			collectable.Collect();
-		}
-	}
+    private void OnTriggerEnter(Collider other)
+    {
+        var collectable = other.GetComponent<ICollectable>();
+        if (collectable != null)
+        {
+            collectable.Collect();
+        }
+    }
 
     #endregion
 
@@ -51,19 +51,19 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     #region Callbacks
 
-	private void OnTouchPositionChanged(float newPositionX)
+    private void OnTouchPositionChanged(float newPositionX)
     {
         transform.position = new Vector3
-		(
-			Mathf.Clamp
-			(
-				transform.position.x + sideSpeed * Time.deltaTime * newPositionX,
-				-RoadController.Instance.PlaneSideSize + 0.5f,
-				RoadController.Instance.PlaneSideSize - 0.5f
-			),
-			transform.position.y,
-			transform.position.z
-		);
+        (
+            Mathf.Clamp
+            (
+                transform.position.x + sideSpeed * Time.deltaTime * newPositionX,
+                -RoadController.Instance.PlaneSideSize + 0.5f,
+                RoadController.Instance.PlaneSideSize - 0.5f
+            ),
+            transform.position.y,
+            transform.position.z
+        );
     }
 
     #endregion
