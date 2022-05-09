@@ -22,6 +22,6 @@ public class GameManager : MonoSingleton<GameManager>
     public void UpdateGameState(GameStates newState)
     {
         currentGameState = newState;
-        GameStatesChanged?.Invoke(currentGameState);
+        GameStatesChanged?.Invoke(newState);
     }
 }

@@ -32,10 +32,10 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     private void Update()
     {
-        if (GameManager.Instance.CurrentGameState != GameStates.InGame) return;
-        
+        // if (GameManager.Instance.CurrentGameState != GameStates.InGame) return;
+
         transform.position += new Vector3(0, 0, speed * Time.deltaTime);
-        
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -45,6 +45,11 @@ public class PlayerController : MonoSingleton<PlayerController>
         {
             collectable.Collect();
             ArrowCountChanged?.Invoke();
+            return;
+        }
+        if (other.tag == "Finish")
+        {
+            GameManager.Instance.UpdateGameState(GameStates.Final);
         }
     }
 
@@ -56,19 +61,26 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     #region Callbacks
 
-    private void OnTouchPositionChanged(float newPositionX)
+    private void OnTouchPositionChanged(Touch touch)
     {
-        transform.position = new Vector3
-        (
-            Mathf.Clamp
+        if (GameManager.Instance.CurrentGameState == GameStates.InGame)
+        {
+            transform.position = new Vector3
             (
-                transform.position.x + sideSpeed * Time.deltaTime * newPositionX,
-                -RoadController.Instance.PlaneSideSize + 0.5f,
-                RoadController.Instance.PlaneSideSize - 0.5f
-            ),
-            transform.position.y,
-            transform.position.z
-        );
+                Mathf.Clamp
+                (
+                    transform.position.x + sideSpeed * Time.deltaTime * touch.deltaPosition.x,
+                    -1,
+                    1
+                ),
+                transform.position.y,
+                transform.position.z
+            );
+        }
+        else
+        {
+            transform.position = new Vector3(0,0,transform.position.z);
+        }
     }
 
     #endregion

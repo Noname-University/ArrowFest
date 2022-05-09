@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Utilities;
 
@@ -20,10 +21,11 @@ public class ArrowManager : MonoSingleton<ArrowManager>
     private int currentArrowCount;
 
     private int ring;
-    private int line;
+    private int line = 0;
+    private float temp = 0;
 
     private int ringCapacity = 0;
-    private int lineCapacity = 50;
+    private int lineCapacity;
 
     #endregion
 
@@ -37,6 +39,8 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
     private void Start()
     {
+        GameManager.Instance.GameStatesChanged += OnGameStatesChanged;
+        InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
         arrows = new GameObject[maxArrowCount];
 
         for (int i = 0; i < maxArrowCount; i++)
@@ -47,8 +51,12 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         }
 
         arrows[0].SetActive(true);
-        currentArrowCount = 1;
-        GetFinalArrowPosition();
+        SetArrows(100);
+    }
+
+    private void Update() 
+    {
+        
     }
 
     #endregion
@@ -77,15 +85,10 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
     private void GetFinalArrowPosition()
     {
-        arrows[0].transform.position = new Vector3(0, transform.position.y, transform.position.z);
-        for (int i = 0; i < arrows.Length; i+=2)
+        for (int i = -currentArrowCount/2; i < currentArrowCount/2; i++)
         {
-            line++;
-            arrows[i].SetActive(true);
-            arrows[i + 1].SetActive(true);
-            arrows[i].transform.position = new Vector3(0 - (.05f * i), 0, 0);
-            arrows[i + 1].transform.position = new Vector3(0 + (.05f * i), 0, 0);
-        }
+            arrows[i+currentArrowCount/2].transform.position = new Vector3((4.0f/(float )currentArrowCount * i), 0, arrows[i+currentArrowCount/2].transform.position.z);
+        } 
     }
 
     public void IncreaseArrows(int count)
@@ -125,6 +128,23 @@ public class ArrowManager : MonoSingleton<ArrowManager>
     #endregion
 
     #region Callbacks
+
+    private void OnGameStatesChanged(GameStates newState)
+    {
+        if(newState == GameStates.Final)
+        {
+            temp = (int)Mathf.Sqrt(currentArrowCount)*2;
+        }
+    }
+
+
+    private void OnTouchPositionChanged(Touch touch)
+    {
+        if(GameManager.Instance.CurrentGameState == GameStates.Final)
+        {
+            GetFinalArrowPosition();    
+        }
+    }
 
     #endregion
 }

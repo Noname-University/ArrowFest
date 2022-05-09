@@ -96,7 +96,7 @@ public class UIController : MonoSingleton<UIController>
     #endregion
 
     #region Callbacks
-    private void OnTouchPositionChanged(float obj)
+    private void OnTouchPositionChanged(Touch touch)
     {
         holdAndMovePanel.SetActive(false);
         arrowCountText.gameObject.SetActive(true);

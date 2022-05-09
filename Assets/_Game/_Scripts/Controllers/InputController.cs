@@ -18,7 +18,7 @@ public class InputController : MonoSingleton<InputController>
 
 	#region Actions
 
-	public event Action<float> TouchPositionChanged;
+	public event Action<Touch> TouchPositionChanged;
 
 	#endregion
 
@@ -29,7 +29,7 @@ public class InputController : MonoSingleton<InputController>
 		if(Input.touchCount > 0)
 		{
 			var touch = Input.GetTouch(0);
-			TouchPositionChanged?.Invoke(touch.deltaPosition.x);
+			TouchPositionChanged?.Invoke(touch);
 		}
 	}
 
