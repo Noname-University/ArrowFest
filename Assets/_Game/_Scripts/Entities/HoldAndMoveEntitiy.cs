@@ -1,35 +1,41 @@
+using System;
 using UnityEngine;
-using Utilities;
 
-public class ScoreController : MonoSingleton<ScoreController>
+public class HoldAndMoveEntitiy : MonoBehaviour
 {
     #region SerializedFields
 
     #endregion
 
     #region Variables
-    private int currentScore = 0;
 
     #endregion
 
     #region Props
-    public int CurrentScore => currentScore;
 
     #endregion
 
     #region Unity Methods
+    private void Start()
+    {
+        MoveEntitiy();
+
+    }
+
+
 
     #endregion
 
     #region Methods
-    public void IncreaseScore(int scoreValue)
+    private void MoveEntitiy()
     {
-        currentScore += scoreValue;
+        transform.LeanMoveLocalX(-413.4f, 0.5f).setLoopPingPong();
     }
 
     #endregion
 
     #region Callbacks
+
 
     #endregion
 }
