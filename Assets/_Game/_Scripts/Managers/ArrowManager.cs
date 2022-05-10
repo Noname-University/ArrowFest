@@ -45,18 +45,18 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
         for (int i = 0; i < maxArrowCount; i++)
         {
-            var arrow = Instantiate(arrowPrefab,GetArrowPosition(i), Quaternion.identity, PlayerController.Instance.transform);
+            var arrow = Instantiate(arrowPrefab, GetArrowPosition(i), Quaternion.identity, PlayerController.Instance.transform);
             arrows[i] = arrow;
             arrow.SetActive(false);
         }
 
         arrows[0].SetActive(true);
-        SetArrows(100);
+        SetArrows(1);
     }
 
-    private void Update() 
+    private void Update()
     {
-        
+
     }
 
     #endregion
@@ -85,10 +85,10 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
     private void GetFinalArrowPosition()
     {
-        for (int i = -currentArrowCount/2; i < currentArrowCount/2; i++)
+        for (int i = -currentArrowCount / 2; i < currentArrowCount / 2; i++)
         {
-            arrows[i+currentArrowCount/2].transform.position = new Vector3((4.0f/(float )currentArrowCount * i), 0, arrows[i+currentArrowCount/2].transform.position.z);
-        } 
+            arrows[i + currentArrowCount / 2].transform.position = new Vector3((4.0f / (float)currentArrowCount * i), 0, arrows[i + currentArrowCount / 2].transform.position.z);
+        }
     }
 
     public void IncreaseArrows(int count)
@@ -131,18 +131,29 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
     private void OnGameStatesChanged(GameStates newState)
     {
-        if(newState == GameStates.Final)
+        if (newState == GameStates.Final)
         {
-            temp = (int)Mathf.Sqrt(currentArrowCount)*2;
+            temp = (int)Mathf.Sqrt(currentArrowCount) * 2;
+            if (currentArrowCount <= 0)
+            {
+                GameManager.Instance.UpdateGameState(GameStates.Success);
+            }
+        }
+        if (newState == GameStates.InGame)
+        {
+            if (currentArrowCount <= 0)
+            {
+                GameManager.Instance.UpdateGameState(GameStates.Fail);
+            }
         }
     }
 
 
     private void OnTouchPositionChanged(Touch touch)
     {
-        if(GameManager.Instance.CurrentGameState == GameStates.Final)
+        if (GameManager.Instance.CurrentGameState == GameStates.Final)
         {
-            GetFinalArrowPosition();    
+            GetFinalArrowPosition();
         }
     }
 

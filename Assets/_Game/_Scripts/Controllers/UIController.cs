@@ -3,6 +3,7 @@ using Utilities;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class UIController : MonoSingleton<UIController>
 {
@@ -13,6 +14,8 @@ public class UIController : MonoSingleton<UIController>
 
     [SerializeField]
     private TextMeshProUGUI levelText;
+    [SerializeField]
+    private TextMeshProUGUI buttonScoreText;
 
     [SerializeField]
     private GameObject holdAndMovePanel;
@@ -26,8 +29,8 @@ public class UIController : MonoSingleton<UIController>
     [SerializeField]
     private TextMeshPro arrowCountText;
 
-    [SerializeField]
-    private GameObject slideAndMovePanel;
+    // [SerializeField]
+    // private GameObject slideAndMovePanel;
 
     #endregion
 
@@ -67,7 +70,7 @@ public class UIController : MonoSingleton<UIController>
     }
     private void GetCurrentLevel()
     {
-        levelText.text = "Level " + " " + (SceneManager.GetActiveScene().buildIndex + 1).ToString();
+        levelText.text = "Level " + (SceneManager.GetActiveScene().buildIndex + 1).ToString();
     }
 
     private void GetCurrentScore()
@@ -129,10 +132,11 @@ public class UIController : MonoSingleton<UIController>
             case GameStates.Final:
                 PlayerController.Instance.ArrowCountChanged -= OnArrowCountChanged;
                 arrowCountText.gameObject.SetActive(false);
-                slideAndMovePanel.SetActive(true);
+                //slideAndMovePanel.SetActive(true);
                 break;
             case GameStates.Success:
                 successPanel.SetActive(true);
+                buttonScoreText.text = scoreText.text;
                 break;
         }
     }
