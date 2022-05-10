@@ -15,6 +15,7 @@ public class PlayerController : MonoSingleton<PlayerController>
     #endregion
 
     #region Variables
+    private bool canMove = false;
 
     #endregion
 
@@ -32,9 +33,10 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     private void Update()
     {
-        // if (GameManager.Instance.CurrentGameState != GameStates.InGame) return;
-
-        transform.position += new Vector3(0, 0, speed * Time.deltaTime);
+        if (canMove == true)
+        {
+            transform.position += new Vector3(0, 0, speed * Time.deltaTime);
+        }
 
     }
 
@@ -65,6 +67,7 @@ public class PlayerController : MonoSingleton<PlayerController>
     {
         if (GameManager.Instance.CurrentGameState == GameStates.InGame)
         {
+            canMove = true;
             transform.position = new Vector3
             (
                 Mathf.Clamp
@@ -77,9 +80,10 @@ public class PlayerController : MonoSingleton<PlayerController>
                 transform.position.z
             );
         }
-        else
+        else if (GameManager.Instance.CurrentGameState == GameStates.Final)
         {
-            transform.position = new Vector3(0,0,transform.position.z);
+            canMove = true;
+            transform.position = new Vector3(0, 0, transform.position.z);
         }
     }
 

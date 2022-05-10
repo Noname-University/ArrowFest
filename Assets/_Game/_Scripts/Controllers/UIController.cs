@@ -26,6 +26,9 @@ public class UIController : MonoSingleton<UIController>
     [SerializeField]
     private TextMeshPro arrowCountText;
 
+    [SerializeField]
+    private GameObject slideAndMovePanel;
+
     #endregion
 
     #region Variables
@@ -44,7 +47,7 @@ public class UIController : MonoSingleton<UIController>
         ScoreController.Instance.ScoreChange += OnScoreChange;
     }
 
-   
+
     #endregion
 
     #region Methods
@@ -126,6 +129,7 @@ public class UIController : MonoSingleton<UIController>
             case GameStates.Final:
                 PlayerController.Instance.ArrowCountChanged -= OnArrowCountChanged;
                 arrowCountText.gameObject.SetActive(false);
+                slideAndMovePanel.SetActive(true);
                 break;
             case GameStates.Success:
                 successPanel.SetActive(true);
@@ -133,9 +137,9 @@ public class UIController : MonoSingleton<UIController>
         }
     }
 
-     private void OnScoreChange()
+    private void OnScoreChange()
     {
-       GetCurrentScore();
+        GetCurrentScore();
     }
 
 
