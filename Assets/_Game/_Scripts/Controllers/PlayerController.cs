@@ -4,44 +4,54 @@ using Utilities;
 
 public class PlayerController : MonoSingleton<PlayerController>
 {
-	#region SerializedFields
+    #region SerializedFields
 
-	[SerializeField]
-	private float speed;
+    [SerializeField]
+    private float speed;
 
-	[SerializeField]
-	private float sideSpeed;
+    [SerializeField]
+    private float sideSpeed;
 
-	#endregion
+    #endregion
 
-	#region Variables
+    #region Variables
 
-	#endregion
+    #endregion
 
-	#region Props
+    #region Props
 
-	#endregion
+    #endregion
+    public event Action ArrowCountChanged;
 
-	#region Unity Methods
+    #region Unity Methods
 
-	private void Start() 
-	{
-		InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
-	}
+    private void Start()
+    {
+        InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
+    }
 
-	private void Update() 
-	{
-		transform.position += new Vector3(0, 0, speed * Time.deltaTime);
-	}
+    private void Update()
+    {
+        // if (GameManager.Instance.CurrentGameState != GameStates.InGame) return;
 
-	private void OnTriggerEnter(Collider other) 
-	{
-		var collectable = other.GetComponent<ICollectable>();
-		if (collectable != null)
-		{
-			collectable.Collect();
-		}
-	}
+        transform.position += new Vector3(0, 0, speed * Time.deltaTime);
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        var collectable = other.GetComponent<ICollectable>();
+        if (collectable != null)
+        {
+            collectable.Collect();
+            ArrowCountChanged?.Invoke();
+            return;
+        }
+        if (other.tag == "Finish")
+        {
+            GameManager.Instance.UpdateGameState(GameStates.Final);
+        }
+    }
 
     #endregion
 
@@ -51,19 +61,26 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     #region Callbacks
 
-	private void OnTouchPositionChanged(float newPositionX)
+    private void OnTouchPositionChanged(Touch touch)
     {
-        transform.position = new Vector3
-		(
-			Mathf.Clamp
-			(
-				transform.position.x + sideSpeed * Time.deltaTime * newPositionX,
-				-RoadController.Instance.PlaneSideSize + 0.5f,
-				RoadController.Instance.PlaneSideSize - 0.5f
-			),
-			transform.position.y,
-			transform.position.z
-		);
+        if (GameManager.Instance.CurrentGameState == GameStates.InGame)
+        {
+            transform.position = new Vector3
+            (
+                Mathf.Clamp
+                (
+                    transform.position.x + sideSpeed * Time.deltaTime * touch.deltaPosition.x,
+                    -1,
+                    1
+                ),
+                transform.position.y,
+                transform.position.z
+            );
+        }
+        else
+        {
+            transform.position = new Vector3(0,0,transform.position.z);
+        }
     }
 
     #endregion

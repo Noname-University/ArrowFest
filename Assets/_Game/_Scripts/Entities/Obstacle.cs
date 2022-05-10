@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour, ICollectable
 {
-	#region SerializedFields
+    #region SerializedFields
 
-	[SerializeField]
-	private int value;
+    [SerializeField]
+    private int value;
 
-	[SerializeField]
-	private int score;
+    [SerializeField]
+    private int score;
 
     #endregion
 
@@ -28,18 +28,19 @@ public class Obstacle : MonoBehaviour, ICollectable
 
     public void Collect()
     {
-		ArrowManager.Instance.DecreaseArrows(value);
+        ArrowManager.Instance.DecreaseArrows(value);
+        ScoreController.Instance.IncreaseScore(score);
         Close();
     }
 
-	private void Close()
+    private void Close()
     {
         gameObject.SetActive(false);
     }
 
-	#endregion
+    #endregion
 
-	#region Callbacks
+    #region Callbacks
 
-	#endregion
+    #endregion
 }

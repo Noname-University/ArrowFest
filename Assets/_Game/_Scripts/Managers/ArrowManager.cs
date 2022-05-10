@@ -1,57 +1,69 @@
+using System;
 using UnityEngine;
 using Utilities;
 
 public class ArrowManager : MonoSingleton<ArrowManager>
 {
-	#region SerializedFields
+    #region SerializedFields
 
-	[SerializeField]
-	private GameObject arrowPrefab;
+    [SerializeField]
+    private GameObject arrowPrefab;
 
-	[SerializeField]
-	private int maxArrowCount;
+    [SerializeField]
+    private int maxArrowCount;
 
-	#endregion
+    #endregion
 
-	#region Variables
+    #region Variables
 
-	private GameObject[] arrows;
+    private GameObject[] arrows;
 
-	private int currentArrowCount;
+    private int currentArrowCount;
 
-	private int ring;
-	private int ringCapacity = 0;
+    private int ring;
+    private int line = 0;
+    private float temp = 0;
 
-	#endregion
+    private int ringCapacity = 0;
+    private int lineCapacity;
 
-	#region Props
+    #endregion
+
+    #region Props
 
     public int CurrentArrowCount => currentArrowCount;
 
-	#endregion
+    #endregion
 
-	#region Unity Methods
+    #region Unity Methods
 
-	private void Start() 
-	{
-		arrows = new GameObject[maxArrowCount];
+    private void Start()
+    {
+        GameManager.Instance.GameStatesChanged += OnGameStatesChanged;
+        InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
+        arrows = new GameObject[maxArrowCount];
 
-		for (int i = 0; i < maxArrowCount; i++)
-		{
-			var arrow = Instantiate(arrowPrefab, GetArrowPosition(i), Quaternion.identity,PlayerController.Instance.transform);
-			arrows[i] = arrow;
+        for (int i = 0; i < maxArrowCount; i++)
+        {
+            var arrow = Instantiate(arrowPrefab,GetArrowPosition(i), Quaternion.identity, PlayerController.Instance.transform);
+            arrows[i] = arrow;
             arrow.SetActive(false);
-		}
+        }
 
         arrows[0].SetActive(true);
-        currentArrowCount = 1;
-	}
+        SetArrows(100);
+    }
 
-	#endregion
+    private void Update() 
+    {
+        
+    }
 
-	#region Methods
+    #endregion
 
-	private Vector3 GetArrowPosition(int i)
+    #region Methods
+
+    private Vector3 GetArrowPosition(int i)
     {
         if (i == 0) return Vector3.zero;
 
@@ -71,6 +83,14 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         return new Vector3(x, y, 0);
     }
 
+    private void GetFinalArrowPosition()
+    {
+        for (int i = -currentArrowCount/2; i < currentArrowCount/2; i++)
+        {
+            arrows[i+currentArrowCount/2].transform.position = new Vector3((4.0f/(float )currentArrowCount * i), 0, arrows[i+currentArrowCount/2].transform.position.z);
+        } 
+    }
+
     public void IncreaseArrows(int count)
     {
         for (int i = 0; i < count; i++)
@@ -81,7 +101,7 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
     public void DecreaseArrows(int count)
     {
-        if(currentArrowCount <= count)
+        if (currentArrowCount <= count)
         {
             Debug.Log("gg");
         }
@@ -105,9 +125,26 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         currentArrowCount = newCount;
     }
 
-	#endregion
+    #endregion
 
-	#region Callbacks
+    #region Callbacks
 
-	#endregion
+    private void OnGameStatesChanged(GameStates newState)
+    {
+        if(newState == GameStates.Final)
+        {
+            temp = (int)Mathf.Sqrt(currentArrowCount)*2;
+        }
+    }
+
+
+    private void OnTouchPositionChanged(Touch touch)
+    {
+        if(GameManager.Instance.CurrentGameState == GameStates.Final)
+        {
+            GetFinalArrowPosition();    
+        }
+    }
+
+    #endregion
 }
