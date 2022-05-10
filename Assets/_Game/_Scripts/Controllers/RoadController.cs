@@ -36,6 +36,7 @@ public class RoadController : MonoSingleton<RoadController>
 	#endregion
 
 	#region Methods
+    #if UNITY_EDITOR
 
 	[Button()]
     public void Add()
@@ -62,7 +63,7 @@ public class RoadController : MonoSingleton<RoadController>
         var lastRoad = roads.Last();
         roadFinish.localPosition = lastRoad.transform.localPosition + Vector3.forward * roadLength;
     }
-
+    #endif
 	#endregion
 
 	#region Callbacks

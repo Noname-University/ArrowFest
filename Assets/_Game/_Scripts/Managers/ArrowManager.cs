@@ -49,9 +49,8 @@ public class ArrowManager : MonoSingleton<ArrowManager>
             arrows[i] = arrow;
             arrow.SetActive(false);
         }
-
+        currentArrowCount = 1;
         arrows[0].SetActive(true);
-        SetArrows(1);
     }
 
     private void Update()
@@ -77,8 +76,8 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
         float angle = ((float)currentArrowCount / (float)ringCapacity) * 360f;
 
-        float x = Mathf.Cos(Mathf.Deg2Rad * angle) * ring * .075f;
-        float y = Mathf.Sin(Mathf.Deg2Rad * angle) * ring * .075f;
+        float x = Mathf.Cos(Mathf.Deg2Rad * angle) * ring * .07f;
+        float y = Mathf.Sin(Mathf.Deg2Rad * angle) * ring * .07f;
 
         return new Vector3(x, y, 0);
     }
@@ -104,6 +103,7 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         if (currentArrowCount <= count)
         {
             Debug.Log("gg");
+            
         }
         for (int i = 0; i < count; i++)
         {

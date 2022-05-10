@@ -73,12 +73,14 @@ public class PlayerController : MonoSingleton<PlayerController>
                 Mathf.Clamp
                 (
                     transform.position.x + sideSpeed * Time.deltaTime * touch.deltaPosition.x,
-                    -1,
-                    1
+                    -1.4f,
+                    1.4f
                 ),
                 transform.position.y,
                 transform.position.z
             );
+
+            transform.localScale = new Vector3(1 - Mathf.Abs(transform.position.x) / 6, transform.localScale.y, transform.localScale.z);
         }
         else if (GameManager.Instance.CurrentGameState == GameStates.Final)
         {
