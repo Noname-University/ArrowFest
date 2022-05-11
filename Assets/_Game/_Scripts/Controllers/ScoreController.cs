@@ -11,6 +11,7 @@ public class ScoreController : MonoSingleton<ScoreController>
     #region Variables
 
     private int currentScore = 0;
+    private int finalScore;
 
     #endregion
 
@@ -34,6 +35,12 @@ public class ScoreController : MonoSingleton<ScoreController>
     public void IncreaseScore(int scoreValue)
     {
         currentScore += scoreValue;
+        ScoreChange?.Invoke();
+    }
+
+    public void IncreaseScore(float scoreValue)
+    {
+        currentScore = (int)(scoreValue * currentScore);
         ScoreChange?.Invoke();
     }
 

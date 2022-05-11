@@ -21,11 +21,8 @@ public class ArrowManager : MonoSingleton<ArrowManager>
     private int currentArrowCount;
 
     private int ring;
-    private int line = 0;
-    private float temp = 0;
 
     private int ringCapacity = 0;
-    private int lineCapacity;
 
     #endregion
 
@@ -53,11 +50,6 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         arrows[0].SetActive(true);
     }
 
-    private void Update()
-    {
-
-    }
-
     #endregion
 
     #region Methods
@@ -82,11 +74,11 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         return new Vector3(x, y, 0);
     }
 
-    public void GetFinalArrowPosition()
+    public void SetFinalArrowPositions()
     {
         for (int i = -currentArrowCount / 2; i < currentArrowCount / 2 + 1; i++)
         {
-            arrows[i + currentArrowCount / 2].transform.position = new Vector3((4.0f / (float)currentArrowCount * i), 0, arrows[i + currentArrowCount / 2].transform.position.z);
+            arrows[i + currentArrowCount / 2].transform.position = new Vector3((3.0f / (float)currentArrowCount * i), 0, arrows[i + currentArrowCount / 2].transform.position.z);
         }
     }
 
@@ -102,8 +94,15 @@ public class ArrowManager : MonoSingleton<ArrowManager>
     {
         if (currentArrowCount <= count)
         {
-            GameManager.Instance.UpdateGameState(GameStates.Fail);
 
+            if (GameManager.Instance.CurrentGameState == GameStates.Final)
+            {
+                GameManager.Instance.UpdateGameState(GameStates.Success);
+                SetArrows(0);
+                return;
+            }
+
+            GameManager.Instance.UpdateGameState(GameStates.Fail);
         }
         else
         {
@@ -136,13 +135,11 @@ public class ArrowManager : MonoSingleton<ArrowManager>
     {
         if (newState == GameStates.Final)
         {
-            temp = (int)Mathf.Sqrt(currentArrowCount) * 2;
-            GetFinalArrowPosition();
-            //new Vector3(PlayerController.Instance.transform.localScale.x / 2, PlayerController.Instance.transform.localScale.y, PlayerController.Instance.transform.localScale.z);
-            if (currentArrowCount <= 0)
-            {
-                GameManager.Instance.UpdateGameState(GameStates.Success);
-            }
+            SetFinalArrowPositions();
+        }
+        if (newState == GameStates.Success)
+        {
+            SetFinalArrowPositions();
         }
         if (newState == GameStates.InGame)
         {
@@ -158,7 +155,7 @@ public class ArrowManager : MonoSingleton<ArrowManager>
     {
         if (GameManager.Instance.CurrentGameState == GameStates.Final)
         {
-            GetFinalArrowPosition();
+            SetFinalArrowPositions();
         }
 
     }

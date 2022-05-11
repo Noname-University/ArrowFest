@@ -15,8 +15,9 @@ public class PlayerController : MonoSingleton<PlayerController>
     #endregion
 
     #region Variables
-    private bool canMove = false;
+    private float currentSpeed;
     private Vector3 desiredScale;
+    private float currentFinalScoreAmount;
 
     #endregion
 
@@ -35,11 +36,7 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     private void Update()
     {
-        if (canMove == true)
-        {
-            transform.position += new Vector3(0, 0, speed * Time.deltaTime);
-        }
-
+        transform.position += new Vector3(0, 0, currentSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,11 +46,20 @@ public class PlayerController : MonoSingleton<PlayerController>
         {
             collectable.Collect();
             ArrowCountChanged?.Invoke();
-            return;
+            if(GameManager.Instance.CurrentGameState != GameStates.Final) return;
+            ArrowManager.Instance.SetFinalArrowPositions();
         }
-        if (other.tag == "Finish")
+
+        var finishLine = other.GetComponent<FinishLine>();
+        if (finishLine != null)
         {
             GameManager.Instance.UpdateGameState(GameStates.Final);
+        }
+
+        var finalPlatform = other.GetComponent<FinalPlatform>();
+        if(finalPlatform != null)
+        {
+            currentFinalScoreAmount = finalPlatform.ScoreAmount;
         }
     }
 
@@ -67,16 +73,25 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     private void OnGameStatesChanged(GameStates newState)
     {
+        if(newState == GameStates.InGame)
+        {
+            currentSpeed = speed;
+        }
         if (newState == GameStates.Fail)
         {
             transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+            currentSpeed = 0;
+        }
+        if(newState == GameStates.Success)
+        {
+            ScoreController.Instance.IncreaseScore(currentFinalScoreAmount);
+            currentSpeed = 0;
         }
     }
     private void OnTouchPositionChanged(Touch touch)
     {
         if (GameManager.Instance.CurrentGameState == GameStates.InGame)
         {
-            canMove = true;
             transform.position = new Vector3
             (
                 Mathf.Clamp
@@ -93,7 +108,6 @@ public class PlayerController : MonoSingleton<PlayerController>
         }
         else if (GameManager.Instance.CurrentGameState == GameStates.Final)
         {
-            canMove = true;
             transform.position = new Vector3(0, 0, transform.position.z);
             transform.localScale = new Vector3
             (

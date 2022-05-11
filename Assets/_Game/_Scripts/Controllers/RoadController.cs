@@ -14,7 +14,9 @@ public class RoadController : MonoSingleton<RoadController>
 	#region SerializedFields
 
 	public List<GameObject> roads;
+
     public GameObject roadPrefab;
+
     public Transform roadFinish;
 
 	#endregion
@@ -45,7 +47,7 @@ public class RoadController : MonoSingleton<RoadController>
         road.transform.localPosition = Vector3.forward * roadLength * roads.Count;
         roads.Add(road);
 
-        roadFinish.localPosition = road.transform.localPosition + Vector3.forward * roadLength;
+        roadFinish.localPosition = road.transform.localPosition + Vector3.forward * roadLength + Vector3.down;
 
     }
     
@@ -61,7 +63,7 @@ public class RoadController : MonoSingleton<RoadController>
         DestroyImmediate(road);
         
         var lastRoad = roads.Last();
-        roadFinish.localPosition = lastRoad.transform.localPosition + Vector3.forward * roadLength;
+        roadFinish.localPosition = lastRoad.transform.localPosition + Vector3.forward * roadLength + Vector3.down;
     }
     #endif
 	#endregion
