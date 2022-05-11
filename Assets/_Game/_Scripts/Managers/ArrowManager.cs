@@ -82,9 +82,8 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         return new Vector3(x, y, 0);
     }
 
-    private void GetFinalArrowPosition()
+    public void GetFinalArrowPosition()
     {
-        PlayerController.Instance.transform.localScale = PlayerController.Instance.DesiredScale;
         for (int i = -currentArrowCount / 2; i < currentArrowCount / 2 + 1; i++)
         {
             arrows[i + currentArrowCount / 2].transform.position = new Vector3((4.0f / (float)currentArrowCount * i), 0, arrows[i + currentArrowCount / 2].transform.position.z);
@@ -139,7 +138,7 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         {
             temp = (int)Mathf.Sqrt(currentArrowCount) * 2;
             GetFinalArrowPosition();
-            PlayerController.Instance.transform.localScale = new Vector3(PlayerController.Instance.transform.localScale.x / 2, PlayerController.Instance.transform.localScale.y, PlayerController.Instance.transform.localScale.z);
+            //new Vector3(PlayerController.Instance.transform.localScale.x / 2, PlayerController.Instance.transform.localScale.y, PlayerController.Instance.transform.localScale.z);
             if (currentArrowCount <= 0)
             {
                 GameManager.Instance.UpdateGameState(GameStates.Success);
@@ -161,6 +160,7 @@ public class ArrowManager : MonoSingleton<ArrowManager>
         {
             GetFinalArrowPosition();
         }
+
     }
 
     #endregion

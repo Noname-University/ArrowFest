@@ -21,7 +21,7 @@ public class PlayerController : MonoSingleton<PlayerController>
     #endregion
 
     #region Props
-    public Vector3 DesiredScale => desiredScale;
+
     #endregion
     public event Action ArrowCountChanged;
 
@@ -31,7 +31,6 @@ public class PlayerController : MonoSingleton<PlayerController>
     {
         InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
         GameManager.Instance.GameStatesChanged += OnGameStatesChanged;
-        desiredScale = transform.localScale;
     }
 
     private void Update()
@@ -96,6 +95,17 @@ public class PlayerController : MonoSingleton<PlayerController>
         {
             canMove = true;
             transform.position = new Vector3(0, 0, transform.position.z);
+            transform.localScale = new Vector3
+            (
+                Mathf.Clamp
+                (
+                    transform.localScale.x + Time.deltaTime * touch.deltaPosition.x,
+                    transform.localScale.x,
+                    1.4f
+                ),
+                transform.localScale.y,
+                transform.localScale.z
+               );
         }
     }
 
