@@ -16,11 +16,12 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     #region Variables
     private bool canMove = false;
+    private Vector3 desiredScale;
 
     #endregion
 
     #region Props
-
+    public Vector3 DesiredScale => desiredScale;
     #endregion
     public event Action ArrowCountChanged;
 
@@ -29,6 +30,8 @@ public class PlayerController : MonoSingleton<PlayerController>
     private void Start()
     {
         InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
+        GameManager.Instance.GameStatesChanged += OnGameStatesChanged;
+        desiredScale = transform.localScale;
     }
 
     private void Update()
@@ -63,6 +66,13 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     #region Callbacks
 
+    private void OnGameStatesChanged(GameStates newState)
+    {
+        if (newState == GameStates.Fail)
+        {
+            transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+        }
+    }
     private void OnTouchPositionChanged(Touch touch)
     {
         if (GameManager.Instance.CurrentGameState == GameStates.InGame)
