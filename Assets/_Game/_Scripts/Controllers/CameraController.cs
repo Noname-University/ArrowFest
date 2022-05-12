@@ -26,13 +26,20 @@ public class CameraController : MonoSingleton<CameraController>
 
 	private void Start() 
 	{
+		GameManager.Instance.GameStatesChanged += OnGameStatesChanged;
 		mainCamera = Camera.main.transform;
 		player = PlayerController.Instance.transform;
+		//mainCamera.transform.position = player.transform.position + offset;
+	}
+
+	private void Update()
+	{
+		transform.position += new Vector3(0, 0, PlayerController.Instance.CurrentSpeed * Time.deltaTime * PlayerController.Instance.CurrentFinalScoreAmount);	
 	}
 
 	private void LateUpdate() 
 	{
-		mainCamera.transform.position = player.transform.position + offset;
+		// mainCamera.transform.position = player.transform.position + offset;
 	}
 
 	#endregion
@@ -42,6 +49,14 @@ public class CameraController : MonoSingleton<CameraController>
 	#endregion
 
 	#region Callbacks
+
+	 private void OnGameStatesChanged(GameStates newState)
+	 {
+		 if(newState == GameStates.Final)
+		 {
+			mainCamera.transform.position = player.transform.position + offset;
+		 }
+	 }
 
 	#endregion
 }
