@@ -98,5 +98,6 @@ public class Gate : MonoBehaviour, ICollectable
     private void Close()
     {
         gateController.CloseGates();
+        this.gameObject.SetActive(false);
     }
 }

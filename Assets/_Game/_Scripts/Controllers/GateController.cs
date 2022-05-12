@@ -39,8 +39,8 @@ public class GateController : MonoBehaviour
 
     public void CloseGates()
     {
-        gate1.gameObject.SetActive(false);
-        gate2.gameObject.SetActive(false);
+        gate1.gameObject.GetComponent<MeshCollider>().enabled = false; 
+        gate2.gameObject.GetComponent<MeshCollider>().enabled = false; 
     }
 
     #endregion
