@@ -17,11 +17,15 @@ public class PlayerController : MonoSingleton<PlayerController>
     #region Variables
     private float currentSpeed;
     private Vector3 desiredScale;
-    private float currentFinalScoreAmount;
+    public float CurrentFinalScoreAmount => currentFinalScoreAmount;
+    private float currentFinalScoreAmount = 1;
 
     #endregion
 
     #region Props
+    public float CurrentSpeed => currentSpeed;
+
+    public float Speed => speed;
 
     #endregion
     public event Action ArrowCountChanged;
@@ -36,7 +40,7 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     private void Update()
     {
-        transform.position += new Vector3(0, 0, currentSpeed * Time.deltaTime);
+        transform.position += new Vector3(0, 0, currentSpeed * Time.deltaTime * currentFinalScoreAmount);
     }
 
     private void OnTriggerEnter(Collider other)
