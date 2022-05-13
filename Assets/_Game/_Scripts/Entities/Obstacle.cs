@@ -30,6 +30,7 @@ public class Obstacle : MonoBehaviour, ICollectable
     {
         ArrowManager.Instance.DecreaseArrows(value);
         ScoreController.Instance.IncreaseScore(score);
+        gameObject.GetComponent<Animator>().SetTrigger("OnDead");
         LeanTween.delayedCall(3f, () => Close());
     }
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerFollower : MonoBehaviour
@@ -19,15 +20,16 @@ public class PlayerFollower : MonoBehaviour
 
 	#region Unity Methods
 
-	private void LateUpdate() 
+	private void Start() 
+	{
+		GameManager.Instance.GameStatesChanged += OnGameStatesChanged; 
+	}
+
+    private void LateUpdate() 
 	{
 		if (GameManager.Instance.CurrentGameState == GameStates.InGame)
 		{
 			transform.position = PlayerController.Instance.transform.position + offset;
-		}
-		else if (GameManager.Instance.CurrentGameState == GameStates.Final)
-		{
-			gameObject.SetActive(false);
 		}
 	}
 
@@ -38,6 +40,19 @@ public class PlayerFollower : MonoBehaviour
 	#endregion
 
 	#region Callbacks
+
+    private void OnGameStatesChanged(GameStates newState)
+    {
+        switch (newState)
+		{
+			case GameStates.Start:
+				gameObject.SetActive(true);
+				break;
+			case GameStates.Final:
+				gameObject.SetActive(false);
+				break;
+		}
+    }
 
 	#endregion
 }

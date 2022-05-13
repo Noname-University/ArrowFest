@@ -17,15 +17,12 @@ public class PlayerController : MonoSingleton<PlayerController>
     #region Variables
     private float currentSpeed;
     private Vector3 desiredScale;
-    public float CurrentFinalScoreAmount => currentFinalScoreAmount;
     private float currentFinalScoreAmount = 1;
 
     #endregion
 
     #region Props
-    public float CurrentSpeed => currentSpeed;
-
-    public float Speed => speed;
+    public float CurrentSpeed => currentSpeed * Time.deltaTime * currentFinalScoreAmount;
 
     #endregion
     public event Action ArrowCountChanged;
@@ -51,7 +48,7 @@ public class PlayerController : MonoSingleton<PlayerController>
             collectable.Collect();
             ArrowCountChanged?.Invoke();
             if (GameManager.Instance.CurrentGameState != GameStates.Final) return;
-            ArrowManager.Instance.SetFinalArrowPositions();
+            LeanTween.delayedCall(.01f,()=> ArrowManager.Instance.SetFinalArrowPositions());
         }
 
         var finishLine = other.GetComponent<FinishLine>();
@@ -78,54 +75,49 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     private void OnGameStatesChanged(GameStates newState)
     {
-        if (newState == GameStates.InGame)
+        switch (newState)
         {
-            currentSpeed = speed;
-        }
-        if (newState == GameStates.Fail)
-        {
-            transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
-            currentSpeed = 0;
-        }
-        if (newState == GameStates.Success)
-        {
-            ScoreController.Instance.IncreaseScore(currentFinalScoreAmount);
-            currentSpeed = 0;
+            case GameStates.Start:
+                InputController.Instance.TouchPositionChanged += OnTouchPositionChanged;
+                currentSpeed = 0;
+                transform.localScale =Vector3.one;
+                currentFinalScoreAmount = 1;
+                transform.position = Vector3.zero;
+                break;
+            case GameStates.InGame:
+                currentSpeed = speed;
+                break;
+            case GameStates.Final:
+                InputController.Instance.TouchPositionChanged -= OnTouchPositionChanged;
+                break;
+            case GameStates.Fail:
+                currentSpeed = 0;
+                break;
+            case GameStates.Success:
+                ScoreController.Instance.IncreaseScore(currentFinalScoreAmount);
+                currentSpeed = 0;
+                break;
         }
     }
+    
     private void OnTouchPositionChanged(Touch touch)
     {
-        if (GameManager.Instance.CurrentGameState == GameStates.InGame)
-        {
-            transform.position = new Vector3
+        if (GameManager.Instance.CurrentGameState != GameStates.InGame) return;
+        
+        transform.position = new Vector3
+        (
+            Mathf.Clamp
             (
-                Mathf.Clamp
-                (
-                    transform.position.x + sideSpeed * Time.deltaTime * touch.deltaPosition.x,
-                    -1.4f,
-                    1.4f
-                ),
-                transform.position.y,
-                transform.position.z
-            );
+                transform.position.x + sideSpeed * Time.deltaTime * touch.deltaPosition.x,
+                -1.4f,
+                1.4f
+            ),
+            transform.position.y,
+            transform.position.z
+        );
 
-            transform.localScale = new Vector3(1 - Mathf.Abs(transform.position.x) / 6, transform.localScale.y, transform.localScale.z);
-        }
-        else if (GameManager.Instance.CurrentGameState == GameStates.Final)
-        {
-            transform.position = new Vector3(0, 0, transform.position.z);
-            transform.localScale = new Vector3
-            (
-                Mathf.Clamp
-                (
-                    transform.localScale.x + Time.deltaTime * touch.deltaPosition.x,
-                    transform.localScale.x,
-                    1.4f
-                ),
-                transform.localScale.y,
-                transform.localScale.z
-               );
-        }
+        transform.localScale = new Vector3(1 - Mathf.Abs(transform.position.x) / 6, transform.localScale.y, transform.localScale.z);
+        
     }
 
     #endregion

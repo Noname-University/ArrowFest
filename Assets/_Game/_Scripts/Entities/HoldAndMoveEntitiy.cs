@@ -19,8 +19,7 @@ public class HoldAndMoveEntitiy : MonoBehaviour
 
     private void Start()
     {
-        MoveEntitiy();
-
+        GameManager.Instance.GameStatesChanged += OnGameStatesChanged;
     }
 
     #endregion
@@ -29,12 +28,19 @@ public class HoldAndMoveEntitiy : MonoBehaviour
     private void MoveEntitiy()
     {
         transform.LeanMoveLocalX(-250f, 0.5f).setOnComplete(()=> transform.LeanMoveLocalX(250f, 0.5f).setLoopPingPong());
-        
     }
 
     #endregion
 
     #region Callbacks
+
+    private void OnGameStatesChanged(GameStates newState)
+    {
+        if (newState == GameStates.Start)
+        {
+            MoveEntitiy();
+        }
+    }
 
 
     #endregion

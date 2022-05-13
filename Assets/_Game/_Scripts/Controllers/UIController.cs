@@ -61,7 +61,8 @@ public class UIController : MonoSingleton<UIController>
 
         successPanel.SetActive(false);
         failPanel.SetActive(false);
-        holdAndMovePanel.SetActive(true);
+        holdAndMovePanel.transform.parent.gameObject.SetActive(true);
+        holdAndMovePanel.transform.LeanMoveLocalX(-250f, 0.5f).setOnComplete(()=> holdAndMovePanel.transform.LeanMoveLocalX(250f, 0.5f).setLoopPingPong());
         arrowCountText.gameObject.SetActive(true);
         arrowCountText.text = "1";
 
@@ -78,33 +79,18 @@ public class UIController : MonoSingleton<UIController>
         scoreText.text = ScoreController.Instance.CurrentScore.ToString();
     }
 
-    public void GetNextLevelButton()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
-
-    public void GetRestartLevelButton()
-    {
-        //
-    }
-
     private void GetCurrentArrowCount()
     {
         arrowCountText.text = ArrowManager.Instance.CurrentArrowCount.ToString();
     }
-
-    private void OnFinishGame()
-    {
-
-    }
-
 
     #endregion
 
     #region Callbacks
     private void OnTouchPositionChanged(Touch touch)
     {
-        holdAndMovePanel.SetActive(false);
+        if(touch.phase != TouchPhase.Began) return;
+        holdAndMovePanel.transform.parent.gameObject.SetActive(false);
         arrowCountText.gameObject.SetActive(true);
         InputController.Instance.TouchPositionChanged -= OnTouchPositionChanged;
         GameManager.Instance.UpdateGameState(GameStates.InGame);
@@ -132,7 +118,6 @@ public class UIController : MonoSingleton<UIController>
             case GameStates.Final:
                 PlayerController.Instance.ArrowCountChanged -= OnArrowCountChanged;
                 arrowCountText.gameObject.SetActive(false);
-                //slideAndMovePanel.SetActive(true);
                 break;
             case GameStates.Success:
                 successPanel.SetActive(true);

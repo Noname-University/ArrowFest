@@ -47,16 +47,15 @@ public class FinalPlatform : MonoBehaviour, ICollectable
     #endregion
     public void Collect()
     {
-        Debug.Log("asd");
         ArrowManager.Instance.DecreaseArrows(value);
         for (int i = 0; i < Enemies.Length; i++)
         {
+            int index = i;
             Enemies[i].GetComponent<Animator>().SetTrigger("OnDead");
-            // LeanTween.delayedCall(10f, () =>
-            // {
-            //     Enemies[i].SetActive(false);
-
-            // });
+            LeanTween.delayedCall(10f, () =>
+            {
+                Enemies[index].SetActive(false);
+            });
         }
     }
 }

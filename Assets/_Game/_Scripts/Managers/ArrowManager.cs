@@ -54,6 +54,21 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
     #region Methods
 
+    private void InitPositions()
+    {
+        ringCapacity = 0;
+        ring = 0;
+
+        for (int i = 0; i < maxArrowCount; i++)
+        {
+            arrows[i].transform.position = GetArrowPosition(i);
+            arrows[i].SetActive(false);
+        }
+
+        currentArrowCount = 1;
+        arrows[0].SetActive(true);
+    }
+
     private Vector3 GetArrowPosition(int i)
     {
         if (i == 0) return Vector3.zero;
@@ -133,20 +148,23 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
     private void OnGameStatesChanged(GameStates newState)
     {
-        if (newState == GameStates.Final)
+        switch (newState)
         {
-            SetFinalArrowPositions();
-        }
-        if (newState == GameStates.Success)
-        {
-            SetFinalArrowPositions();
-        }
-        if (newState == GameStates.InGame)
-        {
-            if (currentArrowCount <= 0)
-            {
-                GameManager.Instance.UpdateGameState(GameStates.Fail);
-            }
+            case GameStates.Start:
+                InitPositions();
+                break;
+
+            case GameStates.InGame:
+                if (currentArrowCount <= 0) GameManager.Instance.UpdateGameState(GameStates.Fail);
+                break;
+
+            case GameStates.Final:
+                SetFinalArrowPositions();
+                break;
+
+            case GameStates.Success:
+                SetFinalArrowPositions();
+                break;
         }
     }
 
