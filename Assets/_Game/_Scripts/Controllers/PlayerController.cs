@@ -50,7 +50,7 @@ public class PlayerController : MonoSingleton<PlayerController>
         {
             collectable.Collect();
             ArrowCountChanged?.Invoke();
-            if(GameManager.Instance.CurrentGameState != GameStates.Final) return;
+            if (GameManager.Instance.CurrentGameState != GameStates.Final) return;
             ArrowManager.Instance.SetFinalArrowPositions();
         }
 
@@ -61,8 +61,9 @@ public class PlayerController : MonoSingleton<PlayerController>
         }
 
         var finalPlatform = other.GetComponent<FinalPlatform>();
-        if(finalPlatform != null)
+        if (finalPlatform != null)
         {
+            collectable.Collect();
             currentFinalScoreAmount = finalPlatform.ScoreAmount;
         }
     }
@@ -77,7 +78,7 @@ public class PlayerController : MonoSingleton<PlayerController>
 
     private void OnGameStatesChanged(GameStates newState)
     {
-        if(newState == GameStates.InGame)
+        if (newState == GameStates.InGame)
         {
             currentSpeed = speed;
         }
@@ -86,7 +87,7 @@ public class PlayerController : MonoSingleton<PlayerController>
             transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
             currentSpeed = 0;
         }
-        if(newState == GameStates.Success)
+        if (newState == GameStates.Success)
         {
             ScoreController.Instance.IncreaseScore(currentFinalScoreAmount);
             currentSpeed = 0;
