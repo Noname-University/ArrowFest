@@ -27,7 +27,6 @@ public class CameraController : MonoSingleton<CameraController>
 	{
 		player = PlayerController.Instance.transform;
 		offset = transform.position - player.position;
-		GameManager.Instance.GameStatesChanged += OnGameStateChanged;
 	}
 
     private void LateUpdate() 
@@ -42,14 +41,6 @@ public class CameraController : MonoSingleton<CameraController>
 	#endregion
 
 	#region Callbacks
-
-    private void OnGameStateChanged(GameStates newState)
-    {
-		if (newState == GameStates.Start)
-		{
-			offset = transform.position - player.position;
-		}
-    }
-
+	
 	#endregion
 }
