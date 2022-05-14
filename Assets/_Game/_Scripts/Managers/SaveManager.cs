@@ -35,6 +35,11 @@ public class SaveManager : MonoSingleton<SaveManager>
 
 	#region Methods
 
+	public void SaveScore(int NewScore)
+	{
+		PlayerPrefs.SetInt("Score", NewScore);
+	}
+
 	#endregion
 
 	#region Callbacks

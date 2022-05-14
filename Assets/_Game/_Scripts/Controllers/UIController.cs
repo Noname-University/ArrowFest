@@ -71,7 +71,7 @@ public class UIController : MonoSingleton<UIController>
     }
     private void GetCurrentLevel()
     {
-        levelText.text = "Level " + (SceneManager.GetActiveScene().buildIndex + 1).ToString();
+        levelText.text = "Level " + (SaveManager.Instance.CurrentLevel + 1).ToString();
     }
 
     private void GetCurrentScore()

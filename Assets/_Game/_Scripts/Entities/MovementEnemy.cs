@@ -3,10 +3,13 @@ using UnityEngine;
 public class MovementEnemy : MonoBehaviour, ICollectable
 {
     #region SerializedFields
+
     [SerializeField]
     private int score;
+
     [SerializeField]
     private int value;
+
     [SerializeField]
     private GameObject[] movementEnemies;
 
@@ -41,28 +44,13 @@ public class MovementEnemy : MonoBehaviour, ICollectable
                         {
                             ArrowManager.Instance.DecreaseArrows(1);
                             movementEnemies[index].GetComponent<Animator>().SetTrigger("Die");
-                            movementEnemies[index].transform.parent = null;
+                            movementEnemies[index].transform.parent = transform.parent;
                             LeanTween.delayedCall(3f, () => movementEnemies[index].SetActive(false));
                         }
                     );
-
-                    // movementEnemies[index].transform.LeanMoveLocalZ(2f + index*5, 2f + index/5f).setOnComplete
-                    // (
-                    //     () =>
-                    //     {
-                    //         movementEnemies[index].GetComponent<Animator>().SetTrigger("Die");
-                    //         LeanTween.delayedCall(3f, () => movementEnemies[index].SetActive(false));
-                    //     }
-                    // );
-
                 }
             );
-
-
-
         }
-
-
     }
 
 

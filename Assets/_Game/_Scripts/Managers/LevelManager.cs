@@ -48,6 +48,8 @@ public class LevelManager : MonoSingleton<LevelManager>
 	public void InitCurrentLevel()
 	{
 		LeanTween.cancelAll();
+		Destroy(currentLevel);
+		currentLevel = Instantiate(levels[SaveManager.Instance.CurrentLevel], Vector3.zero, Quaternion.identity, transform);
 		GameManager.Instance.UpdateGameState(GameStates.Start);
 	}
 
