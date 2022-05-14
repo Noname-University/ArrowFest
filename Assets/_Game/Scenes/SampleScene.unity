@@ -410,9 +410,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 109916324}
-        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
-        m_MethodName: GetNextLevelButton
+      - m_Target: {fileID: 1469636154}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+        m_MethodName: InitCurrentLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
