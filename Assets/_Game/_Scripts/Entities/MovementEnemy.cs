@@ -36,7 +36,7 @@ public class MovementEnemy : MonoBehaviour, ICollectable
                 () =>
                 {
                     movementEnemies[index].GetComponent<Animator>().SetTrigger("Run");
-                    movementEnemies[index].transform.LeanMoveLocalZ(1f + index, 1f + index).setOnComplete
+                    movementEnemies[index].transform.LeanMoveLocalZ(index, 2f).setOnComplete
                     (
                         () =>
                         {
