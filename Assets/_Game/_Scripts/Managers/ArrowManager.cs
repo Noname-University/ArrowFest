@@ -93,6 +93,8 @@ public class ArrowManager : MonoSingleton<ArrowManager>
     {
         for (int i = -currentArrowCount / 2; i < currentArrowCount / 2 + 1; i++)
         {
+            if (i == currentArrowCount) return;
+            
             arrows[i + currentArrowCount / 2].transform.position = new Vector3((3.0f / (float)currentArrowCount * i), 0, arrows[i + currentArrowCount / 2].transform.position.z);
         }
     }

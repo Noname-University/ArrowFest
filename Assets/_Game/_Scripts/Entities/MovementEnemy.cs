@@ -30,7 +30,7 @@ public class MovementEnemy : MonoBehaviour, ICollectable
     #region Methods
     public void Collect()
     {
-        LeanTween.delayedCall(.5f,()=> transform.LeanMoveZ(40f,5+movementEnemies.Length/10));
+        LeanTween.delayedCall(.5f,()=> transform.LeanMoveZ(transform.position.z+35f,5+movementEnemies.Length/10));
         for (int i = 0; i < movementEnemies.Length; i++)
         {
             int index = i;
