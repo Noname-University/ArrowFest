@@ -101,6 +101,7 @@ public class ArrowManager : MonoSingleton<ArrowManager>
     {
         for (int i = 0; i < count; i++)
         {
+            if(currentArrowCount == maxArrowCount) return;
             arrows[currentArrowCount++].gameObject.SetActive(true);
         }
     }
@@ -130,6 +131,7 @@ public class ArrowManager : MonoSingleton<ArrowManager>
 
     public void SetArrows(int newCount)
     {
+        if(newCount > maxArrowCount) newCount = maxArrowCount - 1;
         for (int i = 0; i < newCount; i++)
         {
             arrows[i].SetActive(true);

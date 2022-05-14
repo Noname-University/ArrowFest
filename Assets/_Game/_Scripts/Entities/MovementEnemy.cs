@@ -27,23 +27,33 @@ public class MovementEnemy : MonoBehaviour, ICollectable
     #region Methods
     public void Collect()
     {
+        LeanTween.delayedCall(.5f,()=> transform.LeanMoveZ(40f,5+movementEnemies.Length/10));
         for (int i = 0; i < movementEnemies.Length; i++)
         {
             int index = i;
-            movementEnemies[i].GetComponent<Animator>().SetTrigger("TurnBack");
-            movementEnemies[i].transform.LeanRotateY(0, .5f).setOnComplete
+            movementEnemies[index].GetComponent<Animator>().SetTrigger("TurnBack");
+            movementEnemies[index].transform.LeanRotateY(0, .4f).setOnComplete
             (
                 () =>
                 {
                     movementEnemies[index].GetComponent<Animator>().SetTrigger("Run");
-                    movementEnemies[index].transform.LeanMoveLocalZ(index, 2f).setOnComplete
-                    (
-                        () =>
+                    LeanTween.delayedCall(5+index/13f, ()=>
                         {
+                            ArrowManager.Instance.DecreaseArrows(1);
                             movementEnemies[index].GetComponent<Animator>().SetTrigger("Die");
+                            movementEnemies[index].transform.parent = null;
                             LeanTween.delayedCall(3f, () => movementEnemies[index].SetActive(false));
                         }
                     );
+
+                    // movementEnemies[index].transform.LeanMoveLocalZ(2f + index*5, 2f + index/5f).setOnComplete
+                    // (
+                    //     () =>
+                    //     {
+                    //         movementEnemies[index].GetComponent<Animator>().SetTrigger("Die");
+                    //         LeanTween.delayedCall(3f, () => movementEnemies[index].SetActive(false));
+                    //     }
+                    // );
 
                 }
             );
